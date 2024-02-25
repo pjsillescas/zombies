@@ -7,7 +7,7 @@ public class PickupManager : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		IPickup pickup = GetComponent<IPickup>();
-		
+
 		if (pickup != null && pickup.ApplyPickup(other.gameObject))
 		{
 			var audioSource = GetComponent<AudioSource>();

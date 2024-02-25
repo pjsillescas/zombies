@@ -8,7 +8,7 @@ public class Radar : MonoBehaviour
 	public event EventHandler<GameObject> OnTargetDetected;
 	public event EventHandler<GameObject> OnTargetLost;
 
-	public List<string> TagsToSearch = new() { "Player" , "Pedestrian" };
+	public List<string> TagsToSearch = new() { "Player", "Pedestrian" };
 
 	private GameObject target;
 	private GameObject temptativeTarget;
@@ -83,7 +83,7 @@ public class Radar : MonoBehaviour
 	{
 		TriggerCheck(other);
 	}
-	
+
 	private void OnTriggerExit(Collider other)
 	{
 		if (other.gameObject.Equals(target) || other.gameObject.Equals(temptativeTarget))

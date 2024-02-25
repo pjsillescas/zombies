@@ -8,10 +8,10 @@ public class TimerUI : MonoBehaviour
 {
 	public event EventHandler OnTimerTick;
 
-    [SerializeField] private TextMeshProUGUI Text;
+	[SerializeField] private TextMeshProUGUI Text;
 	[SerializeField] private int TimerTickSeconds = 60;
 	public static TimerUI Instance { get; private set; }
-	
+
 	private float currentTime = 0;
 	private float currentTimeToTick;
 	private bool isTicking;
@@ -32,7 +32,7 @@ public class TimerUI : MonoBehaviour
 
 	private void Start()
 	{
-		if(Instance != null)
+		if (Instance != null)
 		{
 			Debug.LogError("There is another TimerUI.");
 			return;
@@ -62,7 +62,7 @@ public class TimerUI : MonoBehaviour
 			FormatCurrentTime();
 
 			currentTimeToTick -= Time.deltaTime;
-			if(currentTimeToTick <= 0)
+			if (currentTimeToTick <= 0)
 			{
 				OnTimerTick?.Invoke(this, EventArgs.Empty);
 				currentTimeToTick = TimerTickSeconds;

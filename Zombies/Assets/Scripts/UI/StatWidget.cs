@@ -5,56 +5,56 @@ using TMPro;
 
 public class StatWidget : MonoBehaviour
 {
-    public static StatWidget Instance;
+	public static StatWidget Instance;
 
-    [SerializeField] private TextMeshProUGUI StatText;
+	[SerializeField] private TextMeshProUGUI StatText;
 
-    private int numRemainingZombies;
-    private int numKilledZombies;
+	private int numRemainingZombies;
+	private int numKilledZombies;
 
 	private void Awake()
 	{
-        if (Instance != null)
-        {
-            Debug.LogError("");
-            return;
-        }
+		if (Instance != null)
+		{
+			Debug.LogError("");
+			return;
+		}
 
-        Instance = this;
+		Instance = this;
 
-        numRemainingZombies = 0;
-        numKilledZombies = 0;
+		numRemainingZombies = 0;
+		numKilledZombies = 0;
 	}
 
-    public void UpdateNumRemainingZombies(int numRemainingZombies)
+	public void UpdateNumRemainingZombies(int numRemainingZombies)
 	{
-        this.numRemainingZombies = numRemainingZombies;
-        FormatWidgetString();
-    }
-    
-    public void UpdateNumKilledZombies(int numKilledZombies)
-    {
-        this.numKilledZombies = numKilledZombies;
-        FormatWidgetString();
-    }
-
-    private void FormatWidgetString()
-	{
-        if (StatText != null)
-        {
-            StatText.text = $"{numKilledZombies} / {numRemainingZombies}";
-        }
+		this.numRemainingZombies = numRemainingZombies;
+		FormatWidgetString();
 	}
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        ;
-    }
+	public void UpdateNumKilledZombies(int numKilledZombies)
+	{
+		this.numKilledZombies = numKilledZombies;
+		FormatWidgetString();
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        ;
-    }
+	private void FormatWidgetString()
+	{
+		if (StatText != null)
+		{
+			StatText.text = $"{numKilledZombies} / {numRemainingZombies}";
+		}
+	}
+
+	// Start is called before the first frame update
+	void Start()
+	{
+		;
+	}
+
+	// Update is called once per frame
+	void Update()
+	{
+		;
+	}
 }

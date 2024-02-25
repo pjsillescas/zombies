@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class CarRideInteract : MonoBehaviour, IInteractable
 {
-    [SerializeField] private PecCarUserControl carUserControl;
+	[SerializeField] private PecCarUserControl carUserControl;
 
 	public void Interact(GameObject caller)
 	{
-        if (caller.TryGetComponent(out PlayerController playerController))
-        {
-            carUserControl.SetRider(playerController);
-            carUserControl.Possess();
-        }
+		if (caller.TryGetComponent(out PlayerController playerController))
+		{
+			carUserControl.SetRider(playerController);
+			carUserControl.Possess();
+		}
 
 	}
 }

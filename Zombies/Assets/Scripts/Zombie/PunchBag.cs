@@ -6,7 +6,7 @@ public class PunchBag : MonoBehaviour
 {
 	[SerializeField] private float Damage = 5f;
 
-    private bool isPunching;
+	private bool isPunching;
 
 	public void SetDamage(float damage)
 	{
@@ -30,9 +30,9 @@ public class PunchBag : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(isPunching && other.TryGetComponent<DamageableComponent>(out var damageableComponent))
+		if (isPunching && other.TryGetComponent<DamageableComponent>(out var damageableComponent))
 		{
-			damageableComponent.ApplyDamage(Damage,Vector3.zero, DamageableComponent.DamageType.zombie);
+			damageableComponent.ApplyDamage(Damage, Vector3.zero, DamageableComponent.DamageType.zombie);
 		}
 	}
 

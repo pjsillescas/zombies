@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameConfiguration
 {
-    private static TranslationService.Language Language = TranslationService.Language.en;
+	private static TranslationService.Language Language = TranslationService.Language.en;
 	private static bool GoreMode = true;
 
-    public static void SetLanguage(TranslationService.Language language)
+	public static void SetLanguage(TranslationService.Language language)
 	{
 		Language = language;
 	}

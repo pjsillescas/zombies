@@ -5,38 +5,38 @@ using UnityEngine;
 
 public class PickupGeneratorComponent : MonoBehaviour
 {
-    const float PICKUP_HEIGHT = 2f;
-    
-    [SerializeField] private List<PickupGenerator> PickupGenerators;
-    [SerializeField] private bool DeleteOnGeneration;
+	const float PICKUP_HEIGHT = 2f;
 
-    private DamageableComponent damageableComponent;
+	[SerializeField] private List<PickupGenerator> PickupGenerators;
+	[SerializeField] private bool DeleteOnGeneration;
 
-    public void GenerateRandomPickup()
-    {
-        if (PickupGenerators.Count > 0)
-        {
-            int k = UnityEngine.Random.Range(0, PickupGenerators.Count - 1);
-            PickupGenerators[k].Generate(transform.position + new Vector3(0, PICKUP_HEIGHT, 0), transform.localRotation);
-        }
-    }
+	private DamageableComponent damageableComponent;
+
+	public void GenerateRandomPickup()
+	{
+		if (PickupGenerators.Count > 0)
+		{
+			int k = UnityEngine.Random.Range(0, PickupGenerators.Count - 1);
+			PickupGenerators[k].Generate(transform.position + new Vector3(0, PICKUP_HEIGHT, 0), transform.localRotation);
+		}
+	}
 
 	private void Awake()
 	{
-        damageableComponent = GetComponent<DamageableComponent>();
-        if (damageableComponent != null)
-        {
-            damageableComponent.OnHitPointsDepleted += GenerateRandomPickupMethod;
-        }
+		damageableComponent = GetComponent<DamageableComponent>();
+		if (damageableComponent != null)
+		{
+			damageableComponent.OnHitPointsDepleted += GenerateRandomPickupMethod;
+		}
 	}
 
-    private void GenerateRandomPickupMethod(object sender, DamageableComponent.DamageType damageType)
+	private void GenerateRandomPickupMethod(object sender, DamageableComponent.DamageType damageType)
 	{
-        GenerateRandomPickup();
+		GenerateRandomPickup();
 
-        if(DeleteOnGeneration)
+		if (DeleteOnGeneration)
 		{
-            Destroy(gameObject);
+			Destroy(gameObject);
 		}
-    }
+	}
 }

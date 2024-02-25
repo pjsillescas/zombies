@@ -1,8 +1,8 @@
 
 public interface ICharacterController
 {
-    void DisableControl();
+	void DisableControl();
 
-    void EnableControl();
+	void EnableControl();
 
 }

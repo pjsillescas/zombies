@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class PickupSpawner : MonoBehaviour
 {
-    [SerializeField] private float SpawningCooldown = 30f;
+	[SerializeField] private float SpawningCooldown = 30f;
 
-    private PickupGeneratorComponent pickupGeneratorComponent;
-    private float time;
+	private PickupGeneratorComponent pickupGeneratorComponent;
+	private float time;
 	private void Awake()
 	{
-        pickupGeneratorComponent = GetComponent<PickupGeneratorComponent>();
+		pickupGeneratorComponent = GetComponent<PickupGeneratorComponent>();
 	}
 
 	// Start is called before the first frame update
 	void Start()
-    {
-        time = 0;
-    }
+	{
+		time = 0;
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(time <= 0)
+	// Update is called once per frame
+	void Update()
+	{
+		if (time <= 0)
 		{
-            pickupGeneratorComponent.GenerateRandomPickup();
-            time = SpawningCooldown;
+			pickupGeneratorComponent.GenerateRandomPickup();
+			time = SpawningCooldown;
 		}
-        else
+		else
 		{
-            time -= Time.deltaTime;
+			time -= Time.deltaTime;
 		}
-    }
+	}
 }

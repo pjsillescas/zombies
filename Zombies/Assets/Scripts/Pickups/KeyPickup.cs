@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class KeyPickup : MonoBehaviour, IPickup
 {
-    [SerializeField] private string KeyName = "Key";
+	[SerializeField] private string KeyName = "Key";
 
-    public void SetKeyName(string keyName)
-    {
-        KeyName = keyName;
-    }
+	public void SetKeyName(string keyName)
+	{
+		KeyName = keyName;
+	}
 
-    public bool ApplyPickup(GameObject receiver)
-    {
-        bool result = receiver.TryGetComponent(out KeyChain keychain);
+	public bool ApplyPickup(GameObject receiver)
+	{
+		bool result = receiver.TryGetComponent(out KeyChain keychain);
 
-        if (result && !keychain.HasKey(KeyName))
-        {
-            keychain.AddKey(KeyName);
-        }
+		if (result && !keychain.HasKey(KeyName))
+		{
+			keychain.AddKey(KeyName);
+		}
 
-        return result;
-    }
+		return result;
+	}
 }

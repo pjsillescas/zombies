@@ -10,8 +10,8 @@ public class CarAIManager : MonoBehaviour
 
 	public event EventHandler<CarAIManager> OnDestinationReached;
 
-    //private List<Transform> targets;
-    private NavMeshAgent agent;
+	//private List<Transform> targets;
+	private NavMeshAgent agent;
 	private Vector3 destination;
 	private List<Transform> route;
 	private int currentRouteNodeIndex;
@@ -24,7 +24,7 @@ public class CarAIManager : MonoBehaviour
 
 	// Start is called before the first frame update
 	void Start()
-    {
+	{
 
 	}
 
@@ -35,7 +35,7 @@ public class CarAIManager : MonoBehaviour
 	}
 	private bool UpdateDestination()
 	{
-		if(agent == null)
+		if (agent == null)
 		{
 			return false;
 		}
@@ -51,9 +51,9 @@ public class CarAIManager : MonoBehaviour
 
 			agent.SetDestination(destination);
 		}
-		
+
 		return endOfRoute;
-	}	
+	}
 
 	public void SetRandomDestination()
 	{
@@ -68,8 +68,8 @@ public class CarAIManager : MonoBehaviour
 
 	// Update is called once per frame
 	void Update()
-    {
-        if(Vector3.SqrMagnitude(agent.transform.position - destination) < DESTINATION_THRESHOLD)
+	{
+		if (Vector3.SqrMagnitude(agent.transform.position - destination) < DESTINATION_THRESHOLD)
 		{
 			if (UpdateDestination())
 			{
@@ -78,7 +78,7 @@ public class CarAIManager : MonoBehaviour
 				SetRandomDestination();
 			}
 		}
-    }
+	}
 
 	public void DestroyCar()
 	{
@@ -103,7 +103,7 @@ public class CarAIManager : MonoBehaviour
 		return enabled;
 	}
 
-	private bool HasToWaitForCollider(Collider other,out Semaphore semaphore)
+	private bool HasToWaitForCollider(Collider other, out Semaphore semaphore)
 	{
 		semaphore = other.GetComponent<Semaphore>();
 		return agent.isActiveAndEnabled && (semaphore != null || other.CompareTag("Car"));
@@ -115,7 +115,7 @@ public class CarAIManager : MonoBehaviour
 	}
 	private void OnTriggerEnter(Collider other)
 	{
-		if(HasToWaitForCollider(other, out Semaphore semaphore) && IsSemaphoreColor(semaphore, Semaphore.SemaphoreState.Red))
+		if (HasToWaitForCollider(other, out Semaphore semaphore) && IsSemaphoreColor(semaphore, Semaphore.SemaphoreState.Red))
 		{
 			Debug.Log("stop");
 			destination = agent.destination;
@@ -128,7 +128,7 @@ public class CarAIManager : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Pedestrian") || collision.gameObject.CompareTag("Zombie"))
 		{
-			if(collision.gameObject.TryGetComponent(out DamageableComponent damageableComponent))
+			if (collision.gameObject.TryGetComponent(out DamageableComponent damageableComponent))
 			{
 				damageableComponent.ApplyDamage(1000, collision.transform.position, DamageableComponent.DamageType.hit);
 			}
@@ -141,7 +141,7 @@ public class CarAIManager : MonoBehaviour
 
 	private void CheckSemaphore(Collider other)
 	{
-		if (HasToWaitForCollider(other,out Semaphore semaphore) && agent.isStopped && IsSemaphoreColor(semaphore, Semaphore.SemaphoreState.Green))
+		if (HasToWaitForCollider(other, out Semaphore semaphore) && agent.isStopped && IsSemaphoreColor(semaphore, Semaphore.SemaphoreState.Green))
 		{
 			Debug.Log("go");
 			agent.isStopped = false;

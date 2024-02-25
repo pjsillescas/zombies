@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractionManager : MonoBehaviour
 {
-    private UserInput userInput;
+	private UserInput userInput;
 	private IInteractable interactable;
 
 	private void Awake()
@@ -14,9 +14,9 @@ public class InteractionManager : MonoBehaviour
 	}
 	private void OnTriggerEnter(Collider other)
 	{
-		if(other.TryGetComponent(out IInteractable interactable))
+		if (other.TryGetComponent(out IInteractable interactable))
 		{
-				this.interactable = interactable;
+			this.interactable = interactable;
 		}
 	}
 

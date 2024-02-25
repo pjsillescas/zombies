@@ -20,7 +20,7 @@ public class LevelManager : MonoBehaviour
 			Debug.LogError("There is another level manager.");
 			return;
 		}
-		
+
 		Time.timeScale = 1f;
 
 		Instance = this;
@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour
 
 	public void FinishGame()
 	{
-		OnFinishLevel(null,EventArgs.Empty);
+		OnFinishLevel(null, EventArgs.Empty);
 		OnPlayerDead?.Invoke(this, EventArgs.Empty);
 	}
 

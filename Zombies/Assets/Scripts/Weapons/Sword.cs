@@ -21,7 +21,7 @@ public class Sword : Weapon
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(canSlash && other.TryGetComponent(out DamageableComponent damageableComponent))
+		if (canSlash && other.TryGetComponent(out DamageableComponent damageableComponent))
 		{
 			damageableComponent.ApplyDamage(Damage, other.transform.position, DamageableComponent.DamageType.sword);
 		}
@@ -43,12 +43,12 @@ public class Sword : Weapon
 		canSlash = true;
 	}
 
-    public void DeactivateSwordSlash()
+	public void DeactivateSwordSlash()
 	{
 		canSlash = false;
 	}
 
-    public void FinishSwordSlash()
+	public void FinishSwordSlash()
 	{
 		shooterController.RestorePrimaryWeapon();
 	}

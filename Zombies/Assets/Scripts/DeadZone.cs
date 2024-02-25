@@ -17,7 +17,7 @@ public class DeadZone : MonoBehaviour
 
 		if (damageableComponent != null)
 		{
-			damageableComponent.ApplyDamage(Damage,Vector3.zero, DamageableComponent.DamageType.deadZone);
+			damageableComponent.ApplyDamage(Damage, Vector3.zero, DamageableComponent.DamageType.deadZone);
 		}
 	}
 }

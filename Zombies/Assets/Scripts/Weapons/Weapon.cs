@@ -5,169 +5,169 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public class ShotEventArgs : EventArgs
-    {
-        public Weapon Shotter;
-        public DamageableComponent Victim;
-    }
-
-    public static event EventHandler<ShotEventArgs> OnAnyShot;
-    public enum WeaponType
-    {
-        Rifle,
-        Shotgun,
-        Sword,
-        GrenadeLauncher,
-        Grenade,
-        Zombiefier,
-    }
-
-    [SerializeField] protected WeaponType Type;
-    [SerializeField] protected string Name = "";
-    [SerializeField] protected float CooldownTimeSeconds = 1f;
-    [SerializeField] protected float Damage = 1f;
-    [SerializeField] protected float Spread = 0f;
-    [SerializeField] protected int Ammo = 20;
-    [SerializeField] protected int DefaultAmmo = 20;
-    [SerializeField] protected float WeaponRange = 10f;
-    [SerializeField] protected AudioClip ShootClip;
-    [SerializeField] protected DamageableComponent.DamageType WeaponDamageType;
-
-    protected bool canShoot = true;
-    protected ParticleSystem particles;
-    protected AudioSource audioSource;
-    protected ShooterController shooterController;
-
-
-    protected virtual void Awake()
-    {
-        particles = GetComponent<ParticleSystem>();
-        if (particles == null)
-        {
-            particles = GetComponentInChildren<ParticleSystem>();
-        }
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource != null)
-        {
-            audioSource.clip = ShootClip;
-        }
-    }
-
-    public void ResetAmmo()
-    {
-        Ammo = DefaultAmmo;
-    }
-
-    public virtual void ActivateWeapon()
+	public class ShotEventArgs : EventArgs
 	{
-        gameObject.SetActive(true);
-        canShoot = true;
+		public Weapon Shotter;
+		public DamageableComponent Victim;
 	}
 
-    public virtual void DeactivateWeapon()
+	public static event EventHandler<ShotEventArgs> OnAnyShot;
+	public enum WeaponType
 	{
-        gameObject.SetActive(false);
+		Rifle,
+		Shotgun,
+		Sword,
+		GrenadeLauncher,
+		Grenade,
+		Zombiefier,
 	}
 
-    public void SetShooterController(ShooterController shooterController)
-    {
-        this.shooterController = shooterController;
-    }
+	[SerializeField] protected WeaponType Type;
+	[SerializeField] protected string Name = "";
+	[SerializeField] protected float CooldownTimeSeconds = 1f;
+	[SerializeField] protected float Damage = 1f;
+	[SerializeField] protected float Spread = 0f;
+	[SerializeField] protected int Ammo = 20;
+	[SerializeField] protected int DefaultAmmo = 20;
+	[SerializeField] protected float WeaponRange = 10f;
+	[SerializeField] protected AudioClip ShootClip;
+	[SerializeField] protected DamageableComponent.DamageType WeaponDamageType;
 
-    public virtual string GetAnimationTrigger()
+	protected bool canShoot = true;
+	protected ParticleSystem particles;
+	protected AudioSource audioSource;
+	protected ShooterController shooterController;
+
+
+	protected virtual void Awake()
 	{
-        return "Fire";
+		particles = GetComponent<ParticleSystem>();
+		if (particles == null)
+		{
+			particles = GetComponentInChildren<ParticleSystem>();
+		}
+
+		audioSource = GetComponent<AudioSource>();
+		if (audioSource != null)
+		{
+			audioSource.clip = ShootClip;
+		}
 	}
-    private Vector3 GetShotDirection()
-    {
-        return transform.forward;
-    }
 
-    public virtual bool Shoot()
-    {
-        if (canShoot && Ammo > 0)
-        {
-            Ammo--;
-
-            if (particles != null)
-            {
-                particles.Play();
-            }
-
-            if (audioSource != null)
-            {
-                audioSource.Play();
-            }
-
-            canShoot = false;
-            Vector3 direction = GetShotDirection();
-
-            Vector3 origin = transform.position;
-            Ray ray = new Ray(origin, direction);
-            
-            DamageableComponent receiver = null;
-            if (Physics.Raycast(ray, out RaycastHit hit, WeaponRange, -5, QueryTriggerInteraction.Ignore) &&
-                hit.collider.gameObject.TryGetComponent(out receiver))
-            {
-                receiver.ApplyDamage(Damage, hit.point, WeaponDamageType);
-            }
-
-            SendOnAnyShotEvent(receiver);
-            
-            StartCoroutine(WaitForCooldown());
-            return true;
-        }
-
-        return false;
-    }
-
-    protected void SendOnAnyShotEvent(DamageableComponent receiver)
+	public void ResetAmmo()
 	{
-        OnAnyShot?.Invoke(this, new ShotEventArgs()
-        {
-            Shotter = this,
-            Victim = receiver,
-        });
+		Ammo = DefaultAmmo;
+	}
 
-    }
+	public virtual void ActivateWeapon()
+	{
+		gameObject.SetActive(true);
+		canShoot = true;
+	}
 
-    public virtual void OnAnyShotEvent(ShotEventArgs args)
-    {
-        OnAnyShot?.Invoke(this, args);
-    }
+	public virtual void DeactivateWeapon()
+	{
+		gameObject.SetActive(false);
+	}
 
-    public IEnumerator WaitForCooldown()
-    {
-        yield return new WaitForSeconds(CooldownTimeSeconds);
+	public void SetShooterController(ShooterController shooterController)
+	{
+		this.shooterController = shooterController;
+	}
 
-        canShoot = true;
+	public virtual string GetAnimationTrigger()
+	{
+		return "Fire";
+	}
+	private Vector3 GetShotDirection()
+	{
+		return transform.forward;
+	}
 
-        yield return null;
-    }
+	public virtual bool Shoot()
+	{
+		if (canShoot && Ammo > 0)
+		{
+			Ammo--;
 
-    public string GetName()
-    {
-        return Name;
-    }
+			if (particles != null)
+			{
+				particles.Play();
+			}
 
-    public void SetParentTransform(Transform newParent)
-    {
-        transform.parent = newParent;
-    }
+			if (audioSource != null)
+			{
+				audioSource.Play();
+			}
 
-    public int GetAmmo()
-    {
-        return Ammo;
-    }
+			canShoot = false;
+			Vector3 direction = GetShotDirection();
 
-    public WeaponType GetWeaponType()
-    {
-        return Type;
-    }
+			Vector3 origin = transform.position;
+			Ray ray = new Ray(origin, direction);
 
-    public void AddAmmo(int newAmmo)
-    {
-        Ammo += newAmmo;
-    }
+			DamageableComponent receiver = null;
+			if (Physics.Raycast(ray, out RaycastHit hit, WeaponRange, -5, QueryTriggerInteraction.Ignore) &&
+				hit.collider.gameObject.TryGetComponent(out receiver))
+			{
+				receiver.ApplyDamage(Damage, hit.point, WeaponDamageType);
+			}
+
+			SendOnAnyShotEvent(receiver);
+
+			StartCoroutine(WaitForCooldown());
+			return true;
+		}
+
+		return false;
+	}
+
+	protected void SendOnAnyShotEvent(DamageableComponent receiver)
+	{
+		OnAnyShot?.Invoke(this, new ShotEventArgs()
+		{
+			Shotter = this,
+			Victim = receiver,
+		});
+
+	}
+
+	public virtual void OnAnyShotEvent(ShotEventArgs args)
+	{
+		OnAnyShot?.Invoke(this, args);
+	}
+
+	public IEnumerator WaitForCooldown()
+	{
+		yield return new WaitForSeconds(CooldownTimeSeconds);
+
+		canShoot = true;
+
+		yield return null;
+	}
+
+	public string GetName()
+	{
+		return Name;
+	}
+
+	public void SetParentTransform(Transform newParent)
+	{
+		transform.parent = newParent;
+	}
+
+	public int GetAmmo()
+	{
+		return Ammo;
+	}
+
+	public WeaponType GetWeaponType()
+	{
+		return Type;
+	}
+
+	public void AddAmmo(int newAmmo)
+	{
+		Ammo += newAmmo;
+	}
 }

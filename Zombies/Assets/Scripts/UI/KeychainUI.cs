@@ -5,43 +5,43 @@ using UnityEngine;
 
 public class KeychainUI : MonoBehaviour
 {
-    [SerializeField] private List<TextMeshProUGUI> KeyList;
-    private int numKeys = 0;
-    private TranslationService.Language language;
+	[SerializeField] private List<TextMeshProUGUI> KeyList;
+	private int numKeys = 0;
+	private TranslationService.Language language;
 
 	// Start is called before the first frame update
 	void Start()
-    {
-        language = GameConfiguration.GetLanguage();
-        ResetKeychain();
-        KeyChain keychain = FindAnyObjectByType<KeyChain>();
-        if(keychain != null)
-		{
-            keychain.OnKeyAdded += OnKeyAdded;
-		}
-    }
-
-    private void OnKeyAdded(object sender, string key)
 	{
-        AddKey(key);
+		language = GameConfiguration.GetLanguage();
+		ResetKeychain();
+		KeyChain keychain = FindAnyObjectByType<KeyChain>();
+		if (keychain != null)
+		{
+			keychain.OnKeyAdded += OnKeyAdded;
+		}
 	}
 
-    public void ResetKeychain()
+	private void OnKeyAdded(object sender, string key)
 	{
-        foreach (var text in KeyList)
-        {
-            text.text = "";
-        }
+		AddKey(key);
+	}
 
-        numKeys = 0;
-    }
-
-    public void AddKey(string key)
+	public void ResetKeychain()
 	{
-        if(numKeys < KeyList.Count)
+		foreach (var text in KeyList)
 		{
-            KeyList[numKeys].text = TranslationService.Instance.Translate(key.ToLower(),language);
-            numKeys++;
+			text.text = "";
+		}
+
+		numKeys = 0;
+	}
+
+	public void AddKey(string key)
+	{
+		if (numKeys < KeyList.Count)
+		{
+			KeyList[numKeys].text = TranslationService.Instance.Translate(key.ToLower(), language);
+			numKeys++;
 		}
 	}
 

@@ -10,7 +10,7 @@ public class RunawayState : BaseState
 	private new PedestrianAIManager aiManager;
 	private readonly List<GameObject> targetsOnSight;
 
-	public RunawayState(): base()
+	public RunawayState() : base()
 	{
 		targetsOnSight = new();
 	}
@@ -31,11 +31,11 @@ public class RunawayState : BaseState
 
 	private void OnTargetLost(object sender, GameObject target)
 	{
-		if(targetsOnSight.Contains(target))
+		if (targetsOnSight.Contains(target))
 		{
 			targetsOnSight.Remove(target);
 		}
-		
+
 		if (targetsOnSight.Count == 0)
 		{
 			aiManager.SetState(PedestrianAIManager.PedestrianState.Travel);
@@ -78,7 +78,7 @@ public class RunawayState : BaseState
 
 	protected override void DoTick()
 	{
-		if(targetsOnSight.Count > 0)
+		if (targetsOnSight.Count > 0)
 		{
 			Vector3 direction = Vector3.zero;
 			float distance = 20f;

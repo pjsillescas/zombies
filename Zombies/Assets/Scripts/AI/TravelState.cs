@@ -73,12 +73,12 @@ public class TravelState : BaseState
 	}
 
 	const float DESTINATION_THRESHOLD_SQ = 5;
-	
+
 	private Transform GetRandomDestination()
 	{
 		var destObject = destinations[Random.Range(0, destinations.Count - 1)];
-		
-		while(Vector3.SqrMagnitude(aiManager.transform.position - destObject.position) < DESTINATION_THRESHOLD_SQ)
+
+		while (Vector3.SqrMagnitude(aiManager.transform.position - destObject.position) < DESTINATION_THRESHOLD_SQ)
 		{
 			destObject = destinations[Random.Range(0, destinations.Count - 1)];
 		}

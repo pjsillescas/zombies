@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] private string Key = "";
+	[SerializeField] private string Key = "";
 	[SerializeField] private Transform ClosedPosition;
 	[SerializeField] private Transform OpenPosition;
 	[SerializeField] private Transform DoorObject;
@@ -24,9 +24,9 @@ public class Door : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if(useProximitySensor && other.gameObject.TryGetComponent(out KeyChain keychain))
+		if (useProximitySensor && other.gameObject.TryGetComponent(out KeyChain keychain))
 		{
-            if(Key == "" || keychain.HasKey(Key))
+			if (Key == "" || keychain.HasKey(Key))
 			{
 				if (!isOpen)
 				{
@@ -48,10 +48,10 @@ public class Door : MonoBehaviour
 
 	public void Close()
 	{
-		ActivateDoor(OpenPosition,ClosedPosition);
+		ActivateDoor(OpenPosition, ClosedPosition);
 	}
 
-	private void ActivateDoor(Transform initialPosition,Transform finalPosition)
+	private void ActivateDoor(Transform initialPosition, Transform finalPosition)
 	{
 		if (!activeDoor)
 		{
@@ -66,31 +66,31 @@ public class Door : MonoBehaviour
 
 	// Start is called before the first frame update
 	void Start()
-    {
+	{
 		activeDoor = false;
-    }
+	}
 
 	const float DISTANCE_THRESHOLD = 0.001f;
 	float time;
-    // Update is called once per frame
-    void Update()
-    {
-        if(activeDoor)
+	// Update is called once per frame
+	void Update()
+	{
+		if (activeDoor)
 		{
 			time += Time.deltaTime;
 			DoorObject.transform.position = Vector3.Lerp(initialPosition.position, finalPosition.position, time / TimeToMove);
 
-			if(Vector3.Distance(DoorObject.transform.position,finalPosition.position) < DISTANCE_THRESHOLD)
+			if (Vector3.Distance(DoorObject.transform.position, finalPosition.position) < DISTANCE_THRESHOLD)
 			{
 				isOpen = !isOpen;
 				activeDoor = false;
-				if(TimeOpen > 0)
+				if (TimeOpen > 0)
 				{
 					StartCoroutine(ForceClose());
 				}
 			}
 		}
-    }
+	}
 
 	private IEnumerator ForceClose()
 	{
