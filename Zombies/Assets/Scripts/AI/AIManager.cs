@@ -4,124 +4,118 @@ using UnityEngine;
 
 public class AIManager : MonoBehaviour
 {
-    public delegate void OnAnimationFinishDelegate();
+	public delegate void OnAnimationFinishDelegate();
 
-    public enum State
-    {
-        Roam,
-        Alert,
-        Attack,
-    }
-
-    private RoamState roamState;
-    private AlertState alertState;
-    private AttackState attackState;
-    private IState currentState;
-    private Radar radar;
-    private Material material;
-
-    private void Awake()
-    {
-        radar = GetComponentInChildren<Radar>();
-        material = GetComponentInChildren<Renderer>().material;
-
-        material.color = Color.blue;
-
-        roamState = new();
-        alertState = new();
-        attackState = new();
-
-        roamState.SetAIManager(this);
-        alertState.SetAIManager(this);
-        attackState.SetAIManager(this);
-
-        SetCurrentState(roamState);
-    }
-
-    public void SetSpeeds(float walkSpeed,float runSpeed)
+	public enum State
 	{
-        roamState.SetWalkSpeed(walkSpeed);
-        alertState.SetRunSpeed(runSpeed);
+		Roam,
+		Alert,
+		Attack,
 	}
 
-    private void SetCurrentState(IState newState)
-    {
-        currentState?.OnStateExit();
-        currentState = newState;
+	private RoamState roamState;
+	private AlertState alertState;
+	private AttackState attackState;
+	private IState currentState;
+	private Radar radar;
+	private Material material;
 
-        currentState?.OnStateEnter();
-        //material.color = currentState.GetStateColor();
+	private void Awake()
+	{
+		radar = GetComponentInChildren<Radar>();
+		material = GetComponentInChildren<Renderer>().material;
 
-    }
+		material.color = Color.blue;
 
-    public Radar GetRadar()
-    {
-        return radar;
-    }
+		roamState = new();
+		alertState = new();
+		attackState = new();
 
-    public void SetState(State state)
-    {
-        IState nextState;
-        switch (state)
-        {
-            case State.Alert:
-                nextState = alertState;
-                break;
-            case State.Attack:
-                nextState = attackState;
-                break;
-            case State.Roam:
-            default:
-                nextState = roamState;
-                break;
-        }
+		roamState.SetAIManager(this);
+		alertState.SetAIManager(this);
+		attackState.SetAIManager(this);
 
-        SetCurrentState(nextState);
-    }
+		SetCurrentState(roamState);
+	}
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        ;
-    }
+	public void SetSpeeds(float walkSpeed, float runSpeed)
+	{
+		roamState.SetWalkSpeed(walkSpeed);
+		alertState.SetRunSpeed(runSpeed);
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        currentState?.Tick();
-    }
+	private void SetCurrentState(IState newState)
+	{
+		currentState?.OnStateExit();
+		currentState = newState;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        //Debug.Log("ontriggerenter " + currentState.ToString());
-        currentState?.OnTriggerEnter();
-    }
+		currentState?.OnStateEnter();
+		//material.color = currentState.GetStateColor();
 
-    private void OnTriggerExit(Collider other)
-    {
-        currentState?.OnTriggerExit();
-    }
+	}
 
-    public OnAnimationFinishDelegate onAnimationFinish;
+	public Radar GetRadar()
+	{
+		return radar;
+	}
 
-    public void WaitForAnimation(OnAnimationFinishDelegate onAnimationFinish)
-    {
-        this.onAnimationFinish = onAnimationFinish;
+	public void SetState(State state)
+	{
+		IState nextState = state switch
+		{
+			State.Alert => alertState,
+			State.Attack => attackState,
+			_ => roamState,
+		};
+		SetCurrentState(nextState);
+	}
 
-        StartCoroutine(WaitForAnimationCoroutine());
-    }
+	// Start is called before the first frame update
+	void Start()
+	{
+		;
+	}
 
-    public void OnAnimationFinish()
-    {
-        this.onAnimationFinish?.Invoke();
-    }
+	// Update is called once per frame
+	void Update()
+	{
+		if (isActiveAndEnabled)
+		{
+			currentState?.Tick();
+		}
+	}
 
-    private IEnumerator WaitForAnimationCoroutine()
-    {
-        yield return new WaitForSeconds(1f);
+	private void OnTriggerEnter(Collider other)
+	{
+		//Debug.Log("ontriggerenter " + currentState.ToString());
+		currentState?.OnTriggerEnter();
+	}
 
-        onAnimationFinish?.Invoke();
+	private void OnTriggerExit(Collider other)
+	{
+		currentState?.OnTriggerExit();
+	}
 
-        yield return null;
-    }
+	public OnAnimationFinishDelegate onAnimationFinish;
+
+	public void WaitForAnimation(OnAnimationFinishDelegate onAnimationFinish)
+	{
+		this.onAnimationFinish = onAnimationFinish;
+
+		StartCoroutine(WaitForAnimationCoroutine());
+	}
+
+	public void OnAnimationFinish()
+	{
+		this.onAnimationFinish?.Invoke();
+	}
+
+	private IEnumerator WaitForAnimationCoroutine()
+	{
+		yield return new WaitForSeconds(1f);
+
+		onAnimationFinish?.Invoke();
+
+		yield return null;
+	}
 }

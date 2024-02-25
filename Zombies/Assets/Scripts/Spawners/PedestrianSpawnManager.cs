@@ -40,7 +40,7 @@ public class PedestrianSpawnManager : MonoBehaviour
 
         pedestrian.GetComponent<DamageableComponent>().OnHitPointsDepleted += PedestrianDead;
         pedestrian.transform.SetParent(ParentTransform);
-        Debug.LogWarning("spawn pedestrian " + pedestrian.name + " " + pedestrian.transform.position + " in " + PedestrianSources[sourceIndex].name);
+        Debug.Log("spawn pedestrian " + pedestrian.name + " " + pedestrian.transform.position + " in " + PedestrianSources[sourceIndex].name);
     }
 
     private void PedestrianDestinationReached(object sender, PedestrianAIManager pedestrianAiManager)
